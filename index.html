@@ -1,170 +1,247 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfólio - Rafael Silva</title>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Music Player Fofo</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap');
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .player {
+            text-align: center;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            width: 420px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover img {
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    aspect-ratio: 1/1; /* Mantém a proporção quadrada */
+    object-fit: cover; /* Garante que a imagem cubra a área sem distorção */
+    border-radius: 15px;
+    border: 5px solid #ff6b6b;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+
+        .track-info {
+            font-size: 24px;
+            color: #ff6b6b;
+            margin-top: 15px;
+            transition: opacity 0.5s ease;
+        }
+
+        .controls {
+            margin: 20px 0;
+        }
+
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            color: #ff6b6b;
+            font-size: 24px;
+            animation: fall 4s linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+        }
+        button {
+            background: #ff6b6b;
+            border: none;
+            color: white;
+            padding: 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 26px;
+            margin: 0 10px;
+            transition: all 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.5);
+        }
+
+        button:hover {
+            background: #ff4c4c;
+            transform: scale(1.15);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: #eee;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 15px;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #ff6b6b;
+            border-radius: 10px;
+            transition: width 0.2s ease;
+        }
+
+        .time {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-top: 5px;
+            color: #666;
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-white">
-    <main>
-        <div class="flex h-screen justify-center items-center bg-gray-900">
-            <div class="text-center max-w-6xl mx-10">
-                <p class="my-3 text-sm tracking-widest text-teal-400 uppercase">Desenvolvedor Full Stack</p>
-                <h1 class="my-3 text-3xl font-bold tracking-tight text-gray-100 md:text-5xl">
-                    <span id="typing" class="border-r-2 border-teal-400 pr-1"></span>
-                </h1>
-                <p class="max-w-2xl mx-auto my-2 text-base text-gray-300 md:leading-relaxed md:text-xl">
-                    Olá, seja bem-vindo ao meu portfólio! Aqui você encontra meus projetos e experiências.
-                </p>
-                <div class="flex flex-col items-center justify-center gap-5 mt-6 md:flex-row">
-                    <a class="inline-block min-w-[200px] px-6 py-4 text-white transition-all rounded-md shadow-xl bg-teal-500 hover:bg-teal-600 hover:shadow-2xl"
-                        href="">Explore meus Projetos</a>
-                    <a class="inline-block min-w-[200px] px-6 py-4 text-white transition-all bg-gray-700 rounded-md shadow-xl hover:bg-gray-800 hover:shadow-2xl"
-                        href="">Ver Exemplos</a>
-                </div>
-            </div>
+<body>
+    <div class="player">
+        <div class="hearts"></div>
+        <h1>🎶 EU TE AMO MUITOO 💕</h1>
+        <audio id="audio"></audio>
+        <div class="cover">
+            <img id="cover" src="capa1.jpg" alt="Capa do Álbum">
         </div>
-    </main>
-
-    <!-- Seção Sobre Mim -->
-    <section class="bg-gray-800 text-white py-16">
-        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
-            <div class="text-left max-w-xl mb-8 md:mb-0">
-                <h2 class="text-3xl font-bold mb-4 text-teal-400">Sobre Mim</h2>
-                <p class="text-lg mb-6 text-gray-300">Olá, sou Rafael Silva, um desenvolvedor Full Stack apaixonado por criar soluções inovadoras.</p>
-                <p class="text-lg mb-6 text-gray-300">Formado em Técnico em Informática pelo Instituto Farroupilha de Uruguaiana, atualmente curso Engenharia de Software na Universidade Federal de Alegrete.</p>
-                <p class="text-lg mb-6 text-gray-300">Atuo como estagiário em desenvolvimento Full Stack, aprimorando minhas habilidades técnicas em projetos reais.</p>
-            </div>
-            <div class="relative flex justify-center w-full md:w-auto">
-                <div class="relative w-84 h-84 bg-gradient-to-r from-teal-500 to-teal-400 rounded-lg shadow-xl">
-                    <div class="absolute inset-0 bg-white rounded-lg overflow-hidden shadow-lg">
-                        <img src="myPerfil.jpg" alt="Foto de Rafael Silva" class="w-full h-full object-cover">
-                    </div>
-                </div>
-            </div>
+        <div class="track-info">
+            <p id="track-title">Música 1</p>
         </div>
-    </section>
-
-    <!-- Seção Meus Conhecimentos -->
-    <section class="bg-gray-800 text-white py-16">
-        <div class="max-w-6xl mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-8 text-teal-400">Meus Conhecimentos</h2>
-            <hr class="border-t-2 border-gray-600 my-8 mx-auto w-1/3">
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
-                <div class="flex flex-col items-center transform hover:scale-110 p-4 rounded-lg hover:bg-teal-500">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" width="96" height="96" />
-                    <p class="text-lg text-gray-300">PHP</p>
-                </div>
-                <div class="flex flex-col items-center transform hover:scale-110 p-4 rounded-lg hover:bg-teal-500">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg" width="96" height="96" />
-                    <p class="text-lg text-gray-300">Laravel</p>
-                </div>
-                <div class="flex flex-col items-center transform hover:scale-110 p-4 rounded-lg hover:bg-teal-500">
-                    <img width="96" height="96" src="https://img.icons8.com/fluency/96/vuejs.png" alt="vuejs"/>
-                    <p class="text-lg text-gray-300">Vue.js</p>
-                </div>
-                <div class="flex flex-col items-center transform hover:scale-110 p-4 rounded-lg hover:bg-teal-500">
-                    <img src="./image.png" width="96" height="96" alt="">
-                    <p class="text-lg text-gray-300">Inertia</p>
-                </div>
-                <div class="flex flex-col items-center transform hover:scale-110 p-4 rounded-lg hover:bg-teal-500">
-                    
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="96" height="96" />
-          
-                    <p class="text-lg text-gray-300">JavaScript</p>
-                </div>
-                <div class="flex flex-col items-center transform hover:scale-110 p-4 rounded-lg hover:bg-teal-500">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" width="96" height="96" />
-                    <p class="text-lg text-gray-300">Postgres</p>
-                </div>
-                <div class="flex flex-col items-center transform hover:scale-110 p-4 rounded-lg hover:bg-teal-500">
-                    
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg"  width="96" height="96"/>
-          
-                    <p class="text-lg text-gray-300">MySQL</p>
-                </div>
-                <div class="flex flex-col items-center transform hover:scale-110 p-4 rounded-lg hover:bg-teal-500">
-                    
-           
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg"
-                    width="96" height="96"/>
-          
-                    <p class="text-lg text-gray-300">Tailwindcss</p>
-                </div>
-            </div>
+        <div class="controls">
+            <button id="prev"><i class="fas fa-backward"></i></button>
+            <button id="play"><i class="fas fa-play"></i></button>
+            <button id="next"><i class="fas fa-forward"></i></button>
         </div>
-    </section>
-    <!-- Seção Meus Projetos -->
-    <!-- Seção Meus Projetos -->
-<section class="bg-gray-900 text-white py-16">
-    <div class="max-w-6xl mx-auto px-6 text-center">
-        <h2 class="text-3xl font-bold mb-8 text-teal-400">Meus Projetos</h2>
-        <hr class="border-t-2 border-gray-600 my-8 mx-auto w-1/3">
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            <!-- Projeto 1 -->
-            <div class="bg-gray-800 p-2 rounded-lg shadow-lg">
-                <div class="w-full h-48 md:h-64 flex justify-center items-center bg-gray-700 rounded-md overflow-hidden">
-                    <img src="projeto1.jpg" alt="Projeto 1" class="w-full h-full object-contain">
-                </div>
-                <h3 class="mt-4 text-xl text-teal-400 font-bold">Sindicato dos hoteleiros</h3>
-                <p class="text-gray-400 text-sm text-center mt-2 md:text-base lg:text-sm">
-                    Plataforma web que integra uma landing page dinâmica e um painel administrativo para gerenciar notícias, convenções e solicitações de homologação.
-                </p>                
-                <a href="#" class="mt-4 inline-block text-teal-500 hover:text-teal-300">Ver mais →</a>
-                </div>
-
-            <!-- Projeto 2 -->
-            <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
-                <div class="w-full h-48 md:h-64 flex justify-center items-center bg-gray-700 rounded-md overflow-hidden">
-                    <img src="projeto2.jpg" alt="Projeto 2" class="w-full h-full object-contain">
-                </div>
-                <h3 class="mt-4 text-xl text-teal-400 font-bold">Projeto 2</h3>
-                <p class="text-gray-400 text-sm mt-2">Breve descrição do projeto.</p>
-                <a href="#" class="mt-4 inline-block text-teal-500 hover:text-teal-300">Ver mais →</a>
-            </div>
-
-            <!-- Projeto 3 -->
-            <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
-                <div class="w-full h-48 md:h-64 flex justify-center items-center bg-gray-700 rounded-md overflow-hidden">
-                    <img src="projeto3.jpg" alt="Projeto 3" class="w-full h-full object-contain">
-                </div>
-                <h3 class="mt-4 text-xl text-teal-400 font-bold">Projeto 3</h3>
-                <p class="text-gray-400 text-sm mt-2">Breve descrição do projeto.</p>
-                <a href="#" class="mt-4 inline-block text-teal-500 hover:text-teal-300">Ver mais →</a>
-            </div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress"></div>
+        </div>
+        <div class="time">
+            <span id="current-time">0:00</span>
+            <span id="duration">0:00</span>
         </div>
     </div>
-</section>
 
     <script>
-         document.addEventListener("DOMContentLoaded", function () {
-        const text = "Rafael Silva da Silva";
-        const typingElement = document.getElementById("typing");
-        let index = 0;
-        let isDeleting = false;
+        const audio = document.getElementById('audio');
+        const playButton = document.getElementById('play');
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+        const progress = document.getElementById('progress');
+        const progressContainer = document.querySelector('.progress-container');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationEl = document.getElementById('duration');
+        const trackTitle = document.getElementById('track-title');
+        const cover = document.getElementById('cover');
 
-        function typeEffect() {
-            if (!isDeleting && index < text.length) {
-                typingElement.innerHTML = text.substring(0, index + 1);
-                index++;
-                setTimeout(typeEffect, 100); // Velocidade de digitação
-            } else if (isDeleting && index > 0) {
-                typingElement.innerHTML = text.substring(0, index - 1);
-                index--;
-                setTimeout(typeEffect, 50); // Velocidade de apagar
+        const songs = [
+            { title: "Eu te amo muito", src: "lisboa.mp3", cover: "img1.jpeg" },
+            { title: "Feliz nosso dia", src: "ceu-azuç.mp3", cover: "img2.jpeg" },
+            { title: "beijos minha fofa", src: "hino.mp3", cover: "img3.jpeg" }
+        ];
+
+        let currentSongIndex = 0;
+
+        function loadSong(songIndex) {
+            const song = songs[songIndex];
+            audio.src = song.src;
+            trackTitle.textContent = song.title;
+            cover.src = song.cover;
+        }
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playButton.innerHTML = "<i class='fas fa-pause'></i>";
             } else {
-                isDeleting = !isDeleting;
-                setTimeout(typeEffect, 1000); // Tempo antes de apagar ou começar de novo
+                audio.pause();
+                playButton.innerHTML = "<i class='fas fa-play'></i>";
+            }
+        }
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤️";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+            document.querySelector(".hearts").appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+        
+        setInterval(createHeart, 300);
+
+        function nextSong() {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            loadSong(currentSongIndex);
+            audio.play();
+            playButton.innerHTML = "<i class='fas fa-pause'></i>";
+        }
+
+        function prevSong() {
+            currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+            loadSong(currentSongIndex);
+            audio.play();
+            playButton.innerHTML = "<i class='fas fa-pause'></i>";
+        }
+
+        function updateProgress() {
+            const progressPercent = (audio.currentTime / audio.duration) * 100;
+            progress.style.width = `${progressPercent}%`;
+
+            let minutes = Math.floor(audio.currentTime / 60);
+            let seconds = Math.floor(audio.currentTime % 60);
+            currentTimeEl.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+            let durationMinutes = Math.floor(audio.duration / 60);
+            let durationSeconds = Math.floor(audio.duration % 60);
+            if (!isNaN(durationMinutes) && !isNaN(durationSeconds)) {
+                durationEl.textContent = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
             }
         }
 
-        typeEffect();
-    });
+        function setProgress(event) {
+            const width = progressContainer.clientWidth;
+            const clickX = event.offsetX;
+            const duration = audio.duration;
+            audio.currentTime = (clickX / width) * duration;
+        }
+
+        playButton.addEventListener('click', togglePlay);
+        nextButton.addEventListener('click', nextSong);
+        prevButton.addEventListener('click', prevSong);
+        audio.addEventListener('timeupdate', updateProgress);
+        progressContainer.addEventListener('click', setProgress);
+        audio.addEventListener('ended', nextSong);
+
+        loadSong(currentSongIndex);
     </script>
 </body>
 </html>
